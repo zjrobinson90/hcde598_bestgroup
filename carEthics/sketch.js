@@ -26,12 +26,12 @@ function showOptions() {
 
 
 function mouseReleased() {
+  assignValue();
   randX = int(random(arrayX.length));
   randY = int(random(arrayY.length));
+  qualityCheck();
   append(used1, arrayX[randX]);
   append(used2, arrayY[randY]);
-  qualityCheck();
-  assignValue();
   print(value);
 }
 
