@@ -14,6 +14,7 @@ var carX = 100;
 var carY = 250;
 var on = 0;
 var totalCombinations = arrayX.length - 1;
+var turnCheckOn = 0;
 
 function setup() {
   createCanvas(800, 600);
@@ -32,7 +33,10 @@ function draw() {
   car(carX, carY);
   showOptions();
   turnCarOn();
-  if(value.length == totalCombinations){
+  if (value.length == totalCombinations) {
+    turnCheckOn = 1
+  }
+  if(turnCheckOn == 1){
     background(255);
     fill(0);
     resultsLocal();
