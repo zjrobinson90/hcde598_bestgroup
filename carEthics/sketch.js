@@ -15,10 +15,20 @@ function setup() {
 
 function draw() {
   background(200);
+  qualityCheck();
+  road();
   showOptions();
 }
 
+function road() {
+  fill(50);
+  rect(0, height / 3, width, height / 3);
+}
+
 function showOptions() {
+  noStroke();
+  textSize(15);
+  fill(255);
   text(arrayX[randX], width - 100, 100);
   text("Kill yourself", width - 100, height - (height / 2));
   text(arrayY[randY], width - 100, height - 100);
@@ -29,7 +39,6 @@ function mouseReleased() {
   assignValue();
   randX = int(random(arrayX.length));
   randY = int(random(arrayY.length));
-  qualityCheck();
   append(used1, arrayX[randX]);
   append(used2, arrayY[randY]);
   print(value);
@@ -51,37 +60,27 @@ function qualityCheck() {
 // assigns
 function assignValue() {
   if (mouseX > width - 200 && mouseX < width - 50 && mouseY > 50 && mouseY < 150) {
-    fill(255, 0, 0);
-    append(value, arrayX[randX]);
+    append(value, 
+      {
+        option1:arrayX[randX],
+        option2:arrayY[randY],
+        winner:arrayX[randX]
+      });
   } else if (mouseX > width - 200 && mouseX < width - 50 && mouseY > height - (height / 2) - 50 && mouseY < height - (height / 2) + 100) {
-    fill(0, 255, 0);
-    append(value, "Z");
+    append(value, 
+      {
+        option1:arrayX[randX],
+        option2:arrayY[randY],
+        winner:"Z"
+      });
   } else if (mouseX > width - 200 && mouseX < width - 50 && mouseY > height - 150 && mouseY < height - 50) {
-    fill(0, 0, 255);
-    append(value, arrayY[randY]);
+    append(value, 
+      {
+        option1:arrayX[randX],
+        option2:arrayY[randY],
+        winner:arrayY[randY]
+      });
   } else {
     fill(0);
   }
 }
-
-// function results() {
-//   var x;
-//   for (i = 0; i < used1.length; i++) {
-//     if (value[i] == 0) {
-//       x = used1[i];
-//     } else if (value[i] == 1]) {
-//     x = used2[i];
-//   } else {
-//     x = "Z";
-//   }
-
-//   var y;
-//   for (i = 0; i < used1.length; i++) {
-//     if (value[i] == 0) {
-//       y = used1[i];
-//     } else if (value[i] == 1]) {
-//     y = used2[i];
-//   } else {
-//     y = "Z";
-//   }
-// }
