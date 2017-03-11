@@ -2,8 +2,8 @@
 // Last edited 03/06/17
 // This is some code to crowd-source ethics for self-driving cars
 
-var arrayX = ["One kid", "Group of kids", "One adult", "Group of adults", "Paul Rudd", "Jeff Bezos", "Donald Trump", "The Pope"];
-var arrayY = [];
+var choice1 = ["One kid", "Group of kids", "One adult", "Group of adults", "Paul Rudd", "Jeff Bezos", "Donald Trump", "The Pope"];
+var choice2 = [];
 var value = [];
 var results = [];
 var randX = 0;
@@ -13,13 +13,13 @@ var dir = 0;
 var carX = 100;
 var carY = 250;
 var on = 0;
-var totalCombinations = arrayX.length - 1;
+var totalCombinations = choice1.length - 1;
 var turnCheckOn = 0;
 
 function setup() {
   createCanvas(800, 600);
-  for (i = 0; i < arrayX.length; i++) {
-    append(arrayY, arrayX[i]);
+  for (i = 0; i < choice1.length; i++) {
+    append(choice2, choice1[i]);
     append(results, "choice" + i);
     results[i] = 0;
   }
@@ -46,9 +46,9 @@ function draw() {
 
 
 function resultsLocal() {
-  for(i = 0; i < arrayX.length; i++) {
+  for(i = 0; i < choice1.length; i++) {
     for(j = 0; j < value.length; j++) {
-      if(value[j].winner == arrayX[i]) {
+      if(value[j].winner == choice1[i]) {
         results[i] = results[i] + 1;
       }
     }
@@ -56,8 +56,8 @@ function resultsLocal() {
 }
 
 function findCombinations() {
-  for(i = 2; i < arrayX.length; i++) {
-    totalCombinations = totalCombinations + arrayX.length - i;
+  for(i = 2; i < choice1.length; i++) {
+    totalCombinations = totalCombinations + choice1.length - i;
   }
 }
 
@@ -100,27 +100,27 @@ function showOptions() {
   noStroke();
   textSize(15);
   fill(255);
-  text(arrayX[randX], width - 100, 100);
+  text(choice1[randX], width - 100, 100);
   text("Kill yourself", width - 100, height - (height / 2));
-  text(arrayY[randY], width - 100, height - 100);
+  text(choice2[randY], width - 100, height - 100);
 }
 
 
 function mouseReleased() {
   assignValue();
-  randX = int(random(arrayX.length));
-  randY = int(random(arrayY.length));
+  randX = int(random(choice1.length));
+  randY = int(random(choice2.length));
 }
 
 function qualityCheck() {
   if (randX == randY) {
-    randY = int(random(arrayY.length));
+    randY = int(random(choice2.length));
   } // checks to see if options are equal
 
   // Need to be able to know what pairs we've used
   for (i = 0; i < value.length; i++) {
-    if ((arrayX[randX] == value[i].option1 || arrayX[randX] == value[i].option2) && (arrayY[randY] == value[i].option1 || arrayY[randY] == value[i].option2)) {
-      randY = int(random(arrayY.length));
+    if ((choice1[randX] == value[i].option1 || choice1[randX] == value[i].option2) && (choice2[randY] == value[i].option1 || choice2[randY] == value[i].option2)) {
+      randY = int(random(choice2.length));
     }
   } // checks to see if pair has been used
 }
@@ -130,25 +130,25 @@ function assignValue() {
   if (mouseX > width - 200 && mouseX < width - 50 && mouseY > 50 && mouseY < 150) {
     append(value, 
       {
-        option1:arrayX[randX],
-        option2:arrayY[randY],
-        winner:arrayX[randX]
+        option1:choice1[randX],
+        option2:choice2[randY],
+        winner:choice1[randX]
       });
       dir = 0.4;
   } else if (mouseX > width - 200 && mouseX < width - 50 && mouseY > height - (height / 2) - 50 && mouseY < height - (height / 2) + 100) {
     append(value, 
       {
-        option1:arrayX[randX],
-        option2:arrayY[randY],
+        option1:choice1[randX],
+        option2:choice2[randY],
         winner:"Z"
       });
       dir = 0;
   } else if (mouseX > width - 200 && mouseX < width - 50 && mouseY > height - 150 && mouseY < height - 50) {
     append(value, 
       {
-        option1:arrayX[randX],
-        option2:arrayY[randY],
-        winner:arrayY[randY]
+        option1:choice1[randX],
+        option2:choice2[randY],
+        winner:choice2[randY]
       });
       dir = -0.4;
   } else {
