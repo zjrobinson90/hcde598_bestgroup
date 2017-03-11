@@ -1,5 +1,5 @@
 // Created by Josh Leibsohn and Zechariah Robinson
-// Last edited 03/06/17
+// Last edited 03/11/17
 // This is some code to crowd-source ethics for self-driving cars
 
 var choice1 = ["One kid", "Group of kids", "One adult", "Group of adults", "Paul Rudd", "Jeff Bezos", "Donald Trump", "The Pope"];
@@ -24,17 +24,18 @@ function setup() {
     results[i] = 0;
   }
   findCombinations();
+  randX = int(random(choice1.length));
+  randY = int(random(choice2.length));
 }
 
 function draw() {
   background(100, 200, 0);
-  qualityCheck();
   road();
   car(carX, carY);
   showOptions();
   turnCarOn();
   if (value.length == totalCombinations) {
-    turnCheckOn = 1
+    turnCheckOn = 1;
   }
   if(turnCheckOn == 1){
     background(255);
@@ -42,6 +43,11 @@ function draw() {
     resultsLocal();
     text(results[3], 100, 100);
   }
+  carReset();
+  
+  //DELETE THIS STUFF
+  text(value.length, 100, 100);
+  text(totalCombinations, 100, 150);
 }
 
 
@@ -62,14 +68,19 @@ function findCombinations() {
 }
 
 function turnCarOn() {
-  if(mouseIsPressed) {
-    on = 1;
-  }
   if(on == 1) {
     carAnimation();
   }
+}
+
+function carReset() {
   if(carX == width - 200) {
     on = 0;
+    carX = 100;
+    carY = 250;
+    randX = int(random(choice1.length));
+    randY = int(random(choice2.length));
+    qualityCheck();
   }
 }
 
@@ -107,9 +118,11 @@ function showOptions() {
 
 
 function mouseReleased() {
-  assignValue();
-  randX = int(random(choice1.length));
-  randY = int(random(choice2.length));
+  //checks to see that the mouse is in any three of our choice positions
+  if ((mouseX > width - 200 && mouseX < width - 50 && mouseY > 50 && mouseY < 150) && on === 0 || (mouseX > width - 200 && mouseX < width - 50 && mouseY > height - (height / 2) - 50 && mouseY < height - (height / 2) + 100) && on === 0 || (mouseX > width - 200 && mouseX < width - 50 && mouseY > height - 150 && mouseY < height - 50) && on === 0) {
+    on = 1;
+    assignValue();
+  }
 }
 
 function qualityCheck() {
@@ -122,7 +135,7 @@ function qualityCheck() {
     if ((choice1[randX] == value[i].option1 || choice1[randX] == value[i].option2) && (choice2[randY] == value[i].option1 || choice2[randY] == value[i].option2)) {
       randY = int(random(choice2.length));
     }
-  } // checks to see if pair has been used
+  }
 }
 
 // assigns a new array with the winner
@@ -134,7 +147,7 @@ function assignValue() {
         option2:choice2[randY],
         winner:choice1[randX]
       });
-      dir = 0.4;
+      dir = -3;
   } else if (mouseX > width - 200 && mouseX < width - 50 && mouseY > height - (height / 2) - 50 && mouseY < height - (height / 2) + 100) {
     append(value, 
       {
@@ -150,7 +163,7 @@ function assignValue() {
         option2:choice2[randY],
         winner:choice2[randY]
       });
-      dir = -0.4;
+      dir = 3;
   } else {
     fill(0);
   }
