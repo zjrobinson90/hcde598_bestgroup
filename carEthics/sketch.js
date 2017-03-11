@@ -36,6 +36,7 @@ function draw() {
   road();
   details();
   car(carX, carY);
+  progressBar();
   showOptions();
   turnCarOn();
   if (value.length == totalCombinations) {
@@ -50,6 +51,13 @@ function draw() {
   carReset();
 }
 
+// creates a progress bar to show user how much more they have
+function progressBar(){
+  fill(255);
+  rect(50, height - 30, totalCombinations * 10, 10);
+  fill(85, 131, 204);
+  rect(50, height - 30, value.length * 10, 10);
+}
 
 function resultsLocal() {
   for(i = 0; i < choice1.length; i++) {
