@@ -8,12 +8,14 @@ var choice2 = [];
 var label2 = [];
 var value = [];
 var results = [];
+var finalResults = [];
 var randX = 0;
 var randY = 0;
-var speed = 1 * 7;
+var speed = 1 * 70;
 var dir = 0;
 var carX = 100;
 var carY = 300;
+var carColor = [255, 234, 12];
 var on = 0;
 var totalCombinations = choice1.length - 1;
 var turnCheckOn = 0;
@@ -36,18 +38,22 @@ function draw() {
   buttons();
   road();
   details();
+  wall(width - 175, height / 2 - 75);
   car(carX, carY);
   progressBar();
   showOptions();
   turnCarOn();
   if (value.length == totalCombinations) {
     turnCheckOn = 1;
+    resultsLocal();
   }
   if(turnCheckOn == 1){
     background(255);
     fill(0);
-    resultsLocal();
-    text(results[3], 100, 100);
+    for(i = 0; i < results.length; i++){
+      text(finalResults[i].winner, 100, i * 50);  
+      text(finalResults[i].count, 300, i * 50);  
+    }
   }
   carReset();
 }
@@ -67,6 +73,14 @@ function resultsLocal() {
         results[i] = results[i] + 1;
       }
     }
+  }
+  for(i = 0; i < choice1.length; i++) {
+    append(finalResults, 
+    {
+      winner:label1[i],
+      count:results[i],
+    });
+    totalCombinations++; // stops the resultsLocal from running multiple times in draw function
   }
 }
 
@@ -98,8 +112,16 @@ function road() {
   rect(0, height / 3, width, height / 3);
 }
 
+function wall(x, y) {
+  fill(200, 0, 0);
+  stroke(0);
+  quad(x, y, x + 50, y, x + 150, y + 50, x + 100, y + 50); // top panel
+  quad(x, y, x + 100, y + 50, x + 100, y + 150, x, y + 100); // front panel
+  quad(x + 100, y + 50, x + 150, y + 50, x + 150, y + 150, x + 100, y + 150); // right panel
+}
+
 function car(x, y) {
-  fill(255, 0, 0);
+  fill(carColor);
   rect(x, y, 100, 50);
   rect(x + 25, y - 25, 50, 25);
   fill(0);
@@ -121,7 +143,6 @@ function showOptions() {
   textSize(15);
   fill(255);
   choice1[randX](width - 120, 80);
-  text("Kill yourself", width - 100, height - (height / 2));
   choice2[randY](width - 120, height - 150);
 }
 
