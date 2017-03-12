@@ -11,7 +11,7 @@ var results = [];
 var finalResults = [];
 var randX = 0;
 var randY = 0;
-var speed = 1 * 70;
+var speed = 1 * 7;
 var dir = 0;
 var carX = 100;
 var carY = 300;
@@ -24,6 +24,7 @@ var imgRudd;
 var imgMusk;
 var imgTrump;
 var imgPope;
+var fire;
 
 function setup() {
   createCanvas(800, 600);
@@ -42,6 +43,7 @@ function setup() {
     imgMusk = loadImage("musk.jpg");
     imgTrump = loadImage("trump.jpg");
     imgPope = loadImage("pope.jpg");
+    imgFire = loadImage("fire.png");
 }
 
 function draw() {
@@ -126,6 +128,7 @@ function turnCarOn() {
 function carReset() {
   if(carX == width - 200) {
     on = 0;
+    image(imgFire, width - 300, carY - 250, imgFire.width / 2, imgFire.height / 2);
     carX = 100;
     carY = 300;
     randX = int(random(choice1.length));
