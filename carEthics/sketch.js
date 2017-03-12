@@ -13,7 +13,7 @@ var randY = 0;
 var speed = 1 * 7;
 var dir = 0;
 var carX = 100;
-var carY = 250;
+var carY = 300;
 var on = 0;
 var totalCombinations = choice1.length - 1;
 var turnCheckOn = 0;
@@ -33,6 +33,7 @@ function setup() {
 
 function draw() {
   background(100, 200, 0);
+  buttons();
   road();
   details();
   car(carX, carY);
@@ -85,7 +86,7 @@ function carReset() {
   if(carX == width - 200) {
     on = 0;
     carX = 100;
-    carY = 250;
+    carY = 300;
     randX = int(random(choice1.length));
     randY = int(random(choice2.length));
     qualityCheck();
@@ -119,15 +120,17 @@ function showOptions() {
   noStroke();
   textSize(15);
   fill(255);
-  choice1[randX](width - 120, 120);
+  choice1[randX](width - 120, 80);
   text("Kill yourself", width - 100, height - (height / 2));
-  choice2[randY](width - 120, height - 120);
+  choice2[randY](width - 120, height - 150);
 }
 
 
 function mouseReleased() {
   //checks to see that the mouse is in any three of our choice positions
-  if ((mouseX > width - 200 && mouseX < width - 50 && mouseY > 50 && mouseY < 150) && on === 0 || (mouseX > width - 200 && mouseX < width - 50 && mouseY > height - (height / 2) - 50 && mouseY < height - (height / 2) + 100) && on === 0 || (mouseX > width - 200 && mouseX < width - 50 && mouseY > height - 150 && mouseY < height - 50) && on === 0) {
+  if ((mouseX > width - 200 && mouseX < 775 && mouseY > 40 && mouseY < 190) && on === 0 || 
+      (mouseX > width - 200 && mouseX < width - 50 && mouseY > height - (height / 2) - 50 && mouseY < height - (height / 2) + 100) && on === 0 || 
+      (mouseX > width - 200 && mouseX < 775 && mouseY > 410 && mouseY < 560) && on === 0) {
     on = 1;
     assignValue();
   }
@@ -146,9 +149,12 @@ function qualityCheck() {
   }
 }
 
+//width - 200, 40, 175, 150);
+  //rect (width - 200, 410, 175, 150);
+  
 // assigns a new array with the winner
 function assignValue() {
-  if (mouseX > width - 200 && mouseX < width - 50 && mouseY > 50 && mouseY < 150) {
+  if (mouseX > width - 200 && mouseX < 775 && mouseY > 40 && mouseY < 190) {
     append(value, 
       {
         option1:choice1[randX],
@@ -164,7 +170,7 @@ function assignValue() {
         winner:"Z"
       });
       dir = 0;
-  } else if (mouseX > width - 200 && mouseX < width - 50 && mouseY > height - 150 && mouseY < height - 50) {
+  } else if (mouseX > width - 200 && mouseX < 775 && mouseY > 410 && mouseY < 560) {
     append(value, 
       {
         option1:choice1[randX],
@@ -185,9 +191,9 @@ function details () {
  tree(200, 100);
  tree(300, 100);
  tree(250, 125);
- tree(400, 520);
- tree(350, 490);
- tree(300, 520);
+ tree(100, 520);
+ tree(150, 490);
+ tree(200, 520);
 }
 
 function tree (x, y) {
@@ -239,10 +245,11 @@ function groupOfKids (x, y) {
   kid(x + 30, y + 30);
   kid(x - 30, y + 30);
 }
+
 function groupOfAdults (x, y) {
   adult(x, y);
   adult(x + 30, y + 30);
-  adult(x + 30, y + 30);
+  adult(x - 30, y + 30);
 }
 
 function pope (x, y) {
@@ -259,4 +266,12 @@ function rudd (x, y) {
 
 function musk (x, y) {
   adult(x, y);
+}
+
+function buttons () {
+  noFill();
+  strokeWeight(2);
+  stroke(0);
+  rect (width - 200, 40, 175, 150);
+  rect (width - 200, 410, 175, 150);
 }
