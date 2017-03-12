@@ -3,7 +3,7 @@
 // This is some code to crowd-source ethics for self-driving cars
 
 var choice1 = [kid, adult, groupOfKids, groupOfAdults, rudd, musk, trump, pope];
-var label1 = ["One kid", "Group of kids", "One adult", "Group of adults", "Paul Rudd", "Jeff Bezos", "Donald Trump", "The Pope"];
+var label1 = ["One kid", "One adult", "Group of kids", "Group of adults", "Paul Rudd", "Elon Musk", "Donald Trump", "The Pope"];
 var choice2 = [];
 var label2 = [];
 var value = [];
@@ -11,7 +11,7 @@ var results = [];
 var finalResults = [];
 var randX = 0;
 var randY = 0;
-var speed = 1 * 7;
+var speed = 1 * 70;
 var dir = 0;
 var carX = 100;
 var carY = 300;
@@ -19,6 +19,11 @@ var carColor = [255, 234, 12];
 var on = 0;
 var totalCombinations = choice1.length - 1;
 var turnCheckOn = 0;
+var suicide = 0;
+var imgRudd;
+var imgMusk;
+var imgTrump;
+var imgPope;
 
 function setup() {
   createCanvas(800, 600);
@@ -31,6 +36,12 @@ function setup() {
   findCombinations();
   randX = int(random(choice1.length));
   randY = int(random(choice2.length));
+  
+  // creates the images and assigns them to variables
+    imgRudd = loadImage("rudd.jpg");
+    imgMusk = loadImage("musk.jpg");
+    imgTrump = loadImage("trump.jpg");
+    imgPope = loadImage("pope.jpg");
 }
 
 function draw() {
@@ -48,14 +59,23 @@ function draw() {
     resultsLocal();
   }
   if(turnCheckOn == 1){
-    background(255);
+    background(200);
     fill(0);
     for(i = 0; i < results.length; i++){
-      text(finalResults[i].winner, 100, i * 50);  
-      text(finalResults[i].count, 300, i * 50);  
+      showResults(i);
     }
   }
   carReset();
+}
+
+function showResults(i) {
+  textSize(30);
+  text(finalResults[i].item, 100, (i * 60) + 60);
+  text(finalResults[i].count, 350 + (finalResults[i].count * 30) + 10, (i * 60) + 60);
+  rect(350, (i * 60) + 35, finalResults[i].count * 30, 30);
+  text("Kill yourself", 100, (results.length * 60) + 60);
+  text(suicide, 350 + (suicide * 30) + 10, (results.length * 60) + 60);
+  rect(350, (results.length * 60) + 35, suicide * 30, 30);
 }
 
 // creates a progress bar to show user how much more they have
@@ -74,10 +94,17 @@ function resultsLocal() {
       }
     }
   }
+
+  for(i = 0; i < value.length; i++) {
+    if(value[i].winner == "Z") {
+      suicide++;
+    }
+  }
+
   for(i = 0; i < choice1.length; i++) {
     append(finalResults, 
     {
-      winner:label1[i],
+      item:label1[i],
       count:results[i],
     });
     totalCombinations++; // stops the resultsLocal from running multiple times in draw function
@@ -143,14 +170,16 @@ function showOptions() {
   textSize(15);
   fill(255);
   choice1[randX](width - 120, 80);
+  text(label1[randX], width - 150, 30);
   choice2[randY](width - 120, height - 150);
+  text(label2[randY], width - 150, 580);
 }
 
 
 function mouseReleased() {
   //checks to see that the mouse is in any three of our choice positions
   if ((mouseX > width - 200 && mouseX < 775 && mouseY > 40 && mouseY < 190) && on === 0 || 
-      (mouseX > width - 200 && mouseX < width - 50 && mouseY > height - (height / 2) - 50 && mouseY < height - (height / 2) + 100) && on === 0 || 
+      (mouseX > width - 175 && mouseX < width - 25 && mouseY > (height / 2) - 75 && mouseY < (height / 2) + 75) && on === 0 || 
       (mouseX > width - 200 && mouseX < 775 && mouseY > 410 && mouseY < 560) && on === 0) {
     on = 1;
     assignValue();
@@ -170,7 +199,7 @@ function qualityCheck() {
   }
 }
 
-//width - 200, 40, 175, 150);
+  //width - 200, 40, 175, 150);
   //rect (width - 200, 410, 175, 150);
   
 // assigns a new array with the winner
@@ -183,7 +212,7 @@ function assignValue() {
         winner:choice1[randX]
       });
       dir = -3;
-  } else if (mouseX > width - 200 && mouseX < width - 50 && mouseY > height - (height / 2) - 50 && mouseY < height - (height / 2) + 100) {
+  } else if (mouseX > width - 175 && mouseX < width - 25 && mouseY > (height / 2) - 75 && mouseY < (height / 2) + 75) {
     append(value, 
       {
         option1:choice1[randX],
@@ -275,24 +304,28 @@ function groupOfAdults (x, y) {
 
 function pope (x, y) {
   adult(x, y);
+  image(imgPope, x, y, imgPope.width/10, imgPope.height/10);
 }
 
 function trump (x, y) {
   adult(x, y);
+  image(imgTrump, x, y, imgTrump.width/10, imgTrump.height/10);
 }
 
 function rudd (x, y) {
   adult(x, y);
+  image(imgRudd, x, y, imgRudd.width/10, imgRudd.height/10);
 }
 
 function musk (x, y) {
   adult(x, y);
+  image(imgMusk, x, y, imgMusk.width/10, imgMusk.height/10);
 }
 
 function buttons () {
   noFill();
   strokeWeight(2);
   stroke(0);
-  rect (width - 200, 40, 175, 150);
-  rect (width - 200, 410, 175, 150);
+  rect(width - 200, 40, 175, 150);
+  rect(width - 200, 410, 175, 150);
 }
