@@ -25,6 +25,7 @@ var imgMusk;
 var imgTrump;
 var imgPope;
 var fire;
+var timer = 0;
 
 function setup() {
   createCanvas(800, 600);
@@ -39,6 +40,7 @@ function setup() {
   randY = int(random(choice2.length));
   
   // creates the images and assigns them to variables
+  
     imgRudd = loadImage("rudd.jpg");
     imgMusk = loadImage("musk.jpg");
     imgTrump = loadImage("trump.jpg");
@@ -48,7 +50,7 @@ function setup() {
 
 function draw() {
   background(100, 200, 0);
-  buttons();
+  //buttons();
   road();
   details();
   wall(width - 175, height / 2 - 75);
@@ -67,6 +69,7 @@ function draw() {
       showResults(i);
     }
   }
+  loadFire();
   carReset();
 }
 
@@ -78,6 +81,7 @@ function showResults(i) {
   text("Kill yourself", 100, (results.length * 60) + 60);
   text(suicide, 350 + (suicide * 30) + 10, (results.length * 60) + 60);
   rect(350, (results.length * 60) + 35, suicide * 30, 30);
+  on = 2
 }
 
 // creates a progress bar to show user how much more they have
@@ -125,12 +129,20 @@ function turnCarOn() {
   }
 }
 
-function carReset() {
+function loadFire() {
   if(carX == width - 200) {
+    timer = timer + 1
+    image(imgFire, width - 300, carY - 250, imgFire.width / 2, imgFire.height / 2);
+  }
+}
+
+function carReset() {
+  if(timer == 20) {
     on = 0;
     image(imgFire, width - 300, carY - 250, imgFire.width / 2, imgFire.height / 2);
     carX = 100;
     carY = 300;
+    timer = 0;
     randX = int(random(choice1.length));
     randY = int(random(choice2.length));
     qualityCheck();
@@ -171,11 +183,12 @@ function carAnimation() {
 function showOptions() {
   noStroke();
   textSize(15);
-  fill(255);
+  fill(0);
   choice1[randX](width - 120, 80);
   text(label1[randX], width - 150, 30);
   choice2[randY](width - 120, height - 150);
   text(label2[randY], width - 150, 580);
+  text("Kill Yourself", width - 165, height/2)
 }
 
 
@@ -260,9 +273,9 @@ function tree (x, y) {
 //bottom pos: width - 100, height - 100
 
 function adult (x, y) {
-  fill(200); //fills grey
+  fill(255, 213, 114); //fills grey
   ellipse(x, y, 30); //head
-  stroke(200); //stroke grey
+  stroke(255, 213, 114); //stroke grey
   strokeWeight(3); //stroke size 3
   line(x, y + 15, x, y + 60); // body
   line(x, y + 30, x + 10, y + 20); // right arm
@@ -277,9 +290,9 @@ function adult (x, y) {
 }
 
 function kid (x, y) {
-  fill(200); //fills grey
+  fill(255, 213, 114); //fills grey
   ellipse(x, y, 20); //head
-  stroke(200); //stroke grey
+  stroke(255, 213, 114); //stroke grey
   strokeWeight(3); //stroke 3
   line(x, y + 10, x, y + 35); //body
   line(x, y + 25, x + 8, y + 20); //right arm
@@ -306,23 +319,23 @@ function groupOfAdults (x, y) {
 }
 
 function pope (x, y) {
-  adult(x, y);
-  image(imgPope, x, y, imgPope.width/10, imgPope.height/10);
+  //adult(x, y);
+  image(imgPope, x - 100, y - 40, imgPope.width/10, imgPope.height/10);
 }
 
 function trump (x, y) {
-  adult(x, y);
-  image(imgTrump, x, y, imgTrump.width/10, imgTrump.height/10);
+  //adult(x, y);
+  image(imgTrump, x - 100, y - 40, imgPope.width/10, imgPope.height/10);
 }
 
 function rudd (x, y) {
-  adult(x, y);
-  image(imgRudd, x, y, imgRudd.width/10, imgRudd.height/10);
+  //adult(x, y);
+  image(imgRudd, x - 100, y - 40, imgPope.width/10, imgPope.height/10);
 }
 
 function musk (x, y) {
-  adult(x, y);
-  image(imgMusk, x, y, imgMusk.width/10, imgMusk.height/10);
+  //adult(x, y);
+  image(imgMusk, x - 100, y - 40, imgPope.width/10, imgPope.height/10);
 }
 
 function buttons () {
