@@ -37,8 +37,7 @@ function setup() {
     results[i] = 0; // makes all of the items in the results array equal to 0 to start
   }
   findCombinations(); // runs the function findCombinations one time to create our number of combinations against which we check for completion
-  randX = int(random(choice1.length)); // sets the starting option for choice1
-  randY = int(random(choice2.length)); // sets the starting option for choice2
+  initialOptions(); // sets the initial values for randX and randY and ensures they don't match
   
   // creates the images and assigns them to variables
   imgRudd = loadImage("rudd.jpg");
@@ -50,7 +49,6 @@ function setup() {
 
 function draw() {
   background(100, 200, 0); // creates the background to look like grass
-  //buttons(); // allows us to show hit boxes around all of the options (currently, we decided to not show the hitboxes, but still wanted the option for later)
   road(); // draws our road
   details(); // creates the little details such as the trees and the lines on the road
   wall(width - 175, height / 2 - 75); // draws the wall which you can choose to kill yourself on
@@ -60,17 +58,18 @@ function draw() {
   turnCarOn(); // starts the car animation
   
   // checks to see when all pair options have been gone through to stop the program and show results
-  if (value.length == totalCombinations) {
-    turnCheckOn = 1;
+  if (value.length == totalCombinations) { // checks to see if the number of pairs has met the total number of combinations
+    turnCheckOn = 1; // activates this trigger
     resultsLocal(); // creates and shows the results
   }
+  
   // changes the page to a white background and displays the results
-  if (turnCheckOn == 1){
-    background(200);
-    fill(0);
+  if (turnCheckOn == 1) { // checks to see a trigger has been activated
+    background(200); // sets the background to gray for the results screen
+    fill(0); // sets the text color to black for the results text
     // goes through all of the results and displays each one down the page
-    for (i = 0; i < results.length; i++){
-      showResults(i);
+    for (i = 0; i < results.length; i++) { // for loops through the entire results array
+      showResults(i); // shows all of the results
     }
   }
   loadFire(); // displays the fire and shows it for a little longer than a split second
@@ -80,17 +79,24 @@ function draw() {
 // shows all of the option pairs from which the user is able to pick
 function showResults(i) {
   textSize(30);
-  text(finalResults[i].item, 100, (i * 60) + 60);
-  text(finalResults[i].count, 350 + (finalResults[i].count * 30) + 10, (i * 60) + 60);
-  rect(350, (i * 60) + 35, finalResults[i].count * 30, 30);
-  text("Kill yourself", 100, (results.length * 60) + 60);
-  text(suicide, 350 + (suicide * 30) + 10, (results.length * 60) + 60);
-  rect(350, (results.length * 60) + 35, suicide * 30, 30);
+  text(finalResults[i].item, 30, (i * 60) + 60);
+  text(finalResults[i].count, 280 + (finalResults[i].count * 30) + 10, (i * 60) + 60);
+  rect(280, (i * 60) + 35, finalResults[i].count * 30, 30);
+  // show "kill yourself" results
+  text("Kill yourself", 30, (results.length * 60) + 60);
+  // prevents the "kill yourself" bar from going off the screen
+  if(suicide > 15) {
+    text(suicide, width - 60, (results.length * 60) + 60);
+    rect(280, (results.length * 60) + 35, width - 350, 30);
+  } else {
+    text(suicide, 280 + (suicide * 30) + 10, (results.length * 60) + 60);
+    rect(280, (results.length * 60) + 35, suicide * 30, 30);
+  }
   on = 2
 }
 
 // creates a progress bar to show user how many more pairs they have left
-function progressBar(){
+function progressBar() {
   fill(255);
   rect(50, height - 30, totalCombinations * 10, 10);
   fill(85, 131, 204);
@@ -140,7 +146,7 @@ function turnCarOn() {
 // starts the fire animation when true
 function loadFire() {
   if (carX == width - 200) {
-    timer = timer + 1
+    timer = timer + 1;
     image(imgFire, width - 300, carY - 250, imgFire.width / 2, imgFire.height / 2);
   }
 }
@@ -217,16 +223,23 @@ function mouseReleased() {
   }
 }
 
+// a quality check at the beginning of setup to ensure the first options aren't a match
+function initialOptions() {
+  randX = int(random(choice1.length)); // sets the starting option for choice1
+  randY = int(random(choice2.length)); // sets the starting option for choice2
+  while (randX == randY) {
+    randX = int(random(choice1.length)); // sets the starting option for choice1
+    randY = int(random(choice2.length)); // sets the starting option for choice2
+  }
+}
+
 // checks to ensure the options are not the same and that they haven't been shown before
 function qualityCheck() {
-  if (randX == randY) {
-    randX = int(random(choice1.length));
-    randY = int(random(choice2.length));
-  } // checks to see if options are equal
-
-  // checks to see what pairs have been used
+  // checks to see what pairs have been used and if the options match
   for (i = 0; i < value.length; i++) {
-    if ((choice1[randX] == value[i].option1 || choice1[randX] == value[i].option2) && (choice2[randY] == value[i].option1 || choice2[randY] == value[i].option2)) {
+    while (((choice1[randX] == value[i].option1 || choice1[randX] == value[i].option2) && 
+        (choice2[randY] == value[i].option1 || choice2[randY] == value[i].option2)) || 
+        randX == randY) {
       randX = int(random(choice1.length));
       randY = int(random(choice2.length));
     }
@@ -360,17 +373,21 @@ function musk (x, y) {
   image(imgMusk, x - 100, y - 40, imgPope.width/10, imgPope.height/10);
 }
 
+
+/// Notes for persnal reference///
+
+
+//buttons(); // allows us to show hit boxes around all of the options (currently, we decided to not show the hitboxes, but still wanted the option for later)
+
 // draws a box to show the "hitbox" in which the user can click
-function buttons() {
-  noFill();
-  strokeWeight(2);
-  stroke(0);
-  rect(width - 200, 40, 175, 150);
-  rect(width - 200, 410, 175, 150);
-}
+// function buttons() {
+//   noFill();
+//   strokeWeight(2);
+//   stroke(0);
+//   rect(width - 200, 40, 175, 150);
+//   rect(width - 200, 410, 175, 150);
+// }
 
-
-// Notes for persnal reference//
 
 //width - 200, 40, 175, 150);
 //rect (width - 200, 410, 175, 150);
